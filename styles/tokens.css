@@ -1,0 +1,303 @@
+/* =========================================================================
+   Shakudo Design System
+   colors_and_type.css — Foundational tokens (color, type, space, radius, shadow)
+   The brand metaphor is shakudō, a Japanese copper-gold alloy that patinas
+   from raw copper into a deep purple-black. The palette runs warm-near-black
+   with copper highlights — a deliberate counterweight to the cold-blue norm
+   of enterprise AI/MLOps tooling.
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* -------- Surface / canvas (warm near-black, NOT cool gray) --------- */
+  --color-canvas:        #0b0a09;   /* page floor — warm-tinted near-black */
+  --color-surface:       #14110e;   /* top-nav, sticky bars */
+  --color-elevated:      #1c1813;   /* card surface */
+  --color-elevated-2:    #26211b;   /* hovered/active card, popovers */
+  --color-strong:        #322c25;   /* strongest neutral surface */
+
+  /* -------- Borders / dividers --------------------------------------- */
+  --color-border:        #2a241d;   /* hairline on dark */
+  --color-border-strong: #3d362d;   /* emphasized */
+  --color-border-faint:  #1a1612;   /* almost invisible */
+
+  /* -------- Ink (text) ----------------------------------------------- */
+  --color-ink:           #f6f1e8;   /* primary text — warm white, NOT pure white */
+  --color-ink-body:      #d3ccbe;   /* body running-text */
+  --color-ink-muted:     #968d7e;   /* secondary, labels */
+  --color-ink-subtle:    #635c52;   /* captions, footer fine-print */
+  --color-ink-disabled:  #423d35;
+
+  /* On-light flip (rare — for the copper CTA and light bands) */
+  --color-on-copper:     #1a0f08;   /* dark text on copper fills */
+  --color-on-light:      #0b0a09;
+
+  /* -------- Brand: copper / shakudō ---------------------------------- */
+  --color-copper-50:     #fbf2ec;
+  --color-copper-100:    #f4dccc;
+  --color-copper-200:    #ebbfa3;
+  --color-copper-300:    #e0a37e;
+  --color-copper-400:    #d4885f;   /* light copper — accent fills, hover */
+  --color-copper-500:    #c87355;   /* PRIMARY brand copper */
+  --color-copper-600:    #a55a3f;   /* deep copper — pressed state */
+  --color-copper-700:    #7a3f29;   /* darkest copper */
+  --color-copper-800:    #4a2618;
+  --color-copper-900:    #2a1810;
+
+  /* -------- Brand: patina (deep purple-black, the cooled shakudō) ---- */
+  --color-patina-300:    #6a4a5a;
+  --color-patina-500:    #4a2a3a;   /* signature shakudō patina */
+  --color-patina-700:    #2a1820;
+  --color-patina-900:    #15090e;
+
+  /* -------- Accents (used sparingly, never together) ----------------- */
+  --color-gold:          #d4a64a;   /* warm gold — for the 4% gold in alloy */
+  --color-gold-soft:     #a08236;
+  --color-bone:          #ebe3d2;   /* warm off-white panel */
+
+  /* -------- Semantic ------------------------------------------------- */
+  --color-success:       #6fb56b;   /* desaturated, warm-leaning green */
+  --color-success-soft:  #1f2c1d;
+  --color-warning:       #d4a64a;
+  --color-warning-soft:  #2c2418;
+  --color-danger:        #e15d4c;   /* coral-leaning so it harmonizes w/ copper */
+  --color-danger-soft:   #2c1612;
+  --color-info:          #6b8fb5;
+  --color-info-soft:     #16202c;
+
+  /* -------- Special / decorative ------------------------------------- */
+  --color-grid-line:     rgba(214, 136, 102, 0.06); /* faint copper grid */
+  --color-overlay-scrim: rgba(11, 10, 9, 0.7);
+
+  /* =====================================================================
+     TYPOGRAPHY
+     - Display: Space Grotesk     — geometric, slightly technical
+     - Body:    Inter             — workhorse running-text
+     - Mono:    JetBrains Mono    — code, terminal output, version strings
+     Brand wordmark is custom (see assets/logo-wordmark-*.svg). Do not retype
+     "SHAKUDO" in any sibling typeface — always use the SVG mark.
+     ===================================================================== */
+  --font-display: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont,
+                   'Segoe UI', sans-serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                   Roboto, sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Type scale — display sizes lean tight (-0.02em to -0.04em tracking) */
+  --type-display-2xl: 80px;
+  --type-display-xl:  64px;
+  --type-display-lg:  48px;
+  --type-display-md:  36px;
+  --type-display-sm:  28px;
+  --type-title-lg:    22px;
+  --type-title-md:    18px;
+  --type-title-sm:    15px;
+  --type-body-lg:     17px;
+  --type-body:        15px;
+  --type-body-sm:     13px;
+  --type-caption:     12px;
+  --type-overline:    11px;
+
+  /* Line heights */
+  --leading-tight:    1.05;
+  --leading-snug:     1.2;
+  --leading-normal:   1.5;
+  --leading-relaxed:  1.65;
+
+  /* Letter-spacing — display sizes use NEGATIVE tracking */
+  --tracking-display: -0.025em;
+  --tracking-tight:   -0.015em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-mono:    0;
+  --tracking-overline: 0.14em;       /* small caps labels */
+
+  /* =====================================================================
+     SPACING — base 4px scale
+     ===================================================================== */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;     /* section rhythm */
+  --space-32:  128px;
+
+  /* =====================================================================
+     RADIUS — small to medium; we do NOT use pill chrome for cards
+     ===================================================================== */
+  --radius-xs:   3px;
+  --radius-sm:   6px;     /* inputs, small buttons */
+  --radius-md:   8px;     /* CTAs */
+  --radius-lg:   12px;    /* content cards */
+  --radius-xl:   16px;    /* feature/elevated cards */
+  --radius-2xl:  24px;    /* hero capsules */
+  --radius-pill: 9999px;  /* badges, status pills */
+  --radius-full: 9999px;
+
+  /* =====================================================================
+     ELEVATION / SHADOW — dark theme uses light, warm-tinted glows + a
+     1px hairline. NEVER use heavy black drop shadows on dark surfaces.
+     ===================================================================== */
+  --shadow-none: none;
+  --shadow-sm:   0 1px 0 0 rgba(255, 240, 220, 0.04) inset,
+                 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md:   0 1px 0 0 rgba(255, 240, 220, 0.05) inset,
+                 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+  --shadow-lg:   0 1px 0 0 rgba(255, 240, 220, 0.06) inset,
+                 0 24px 56px -12px rgba(0, 0, 0, 0.6);
+  --shadow-copper-glow: 0 0 0 1px rgba(200, 115, 85, 0.4),
+                        0 8px 32px -4px rgba(200, 115, 85, 0.35);
+  --shadow-focus-ring:  0 0 0 3px rgba(212, 136, 95, 0.3);
+
+  /* Hairline ring used in lieu of borders for emphasis */
+  --ring-hairline:       inset 0 0 0 1px var(--color-border);
+  --ring-hairline-strong: inset 0 0 0 1px var(--color-border-strong);
+
+  /* =====================================================================
+     MOTION
+     ===================================================================== */
+  --motion-instant:  80ms;
+  --motion-quick:    140ms;
+  --motion-base:     220ms;
+  --motion-slow:     380ms;
+  --ease-out:        cubic-bezier(0.2, 0.7, 0.2, 1);   /* default */
+  --ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1); /* gentle overshoot */
+  --ease-in-out:     cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* =====================================================================
+     LAYOUT
+     ===================================================================== */
+  --container-max:   1280px;
+  --container-pad:   32px;
+  --nav-height:      64px;
+}
+
+/* =========================================================================
+   SEMANTIC TYPE CLASSES — apply these directly to elements
+   ========================================================================= */
+.t-display-2xl {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--type-display-2xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--color-ink);
+}
+.t-display-xl {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--type-display-xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--color-ink);
+}
+.t-display-lg {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--type-display-lg);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-display);
+  color: var(--color-ink);
+}
+.t-display-md {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--type-display-md);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+.t-display-sm {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--type-display-sm);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+.t-title-lg {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--type-title-lg);
+  line-height: 1.3;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+}
+.t-title-md {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--type-title-md);
+  line-height: 1.35;
+  color: var(--color-ink);
+}
+.t-title-sm {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--type-title-sm);
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+.t-body-lg {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--type-body-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink-body);
+}
+.t-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--type-body);
+  line-height: var(--leading-normal);
+  color: var(--color-ink-body);
+}
+.t-body-sm {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: var(--type-body-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-ink-muted);
+}
+.t-caption {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--type-caption);
+  line-height: 1.4;
+  color: var(--color-ink-muted);
+}
+.t-overline {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--type-overline);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--color-copper-400);
+}
+.t-mono {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--type-body-sm);
+  line-height: var(--leading-normal);
+  color: var(--color-ink-body);
+}
+
+/* =========================================================================
+   GLOBAL RESET-LITE
+   ========================================================================= */
+html, body { background: var(--color-canvas); color: var(--color-ink); }
+body { font-family: var(--font-body); font-size: var(--type-body); line-height: var(--leading-normal); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); font-weight: 500; letter-spacing: var(--tracking-tight); color: var(--color-ink); margin: 0; }
+p { margin: 0; }
+a { color: var(--color-copper-400); text-decoration: none; }
+a:hover { color: var(--color-copper-300); }
+code, pre, kbd { font-family: var(--font-mono); }
+::selection { background: var(--color-copper-500); color: var(--color-on-copper); }
