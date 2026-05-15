@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { syncCatalog } from '../../../../lib/catalog-db';
+import { runCatalogSync } from '../../../../lib/catalog-db';
 
 export async function POST(req) {
   // Optional bearer token protection — set ADMIN_SYNC_SECRET in env to enable
@@ -15,7 +15,7 @@ export async function POST(req) {
   }
 
   try {
-    const summary = await syncCatalog();
+    const summary = await runCatalogSync('manual');
     return NextResponse.json({ ok: true, ...summary });
   } catch (err) {
     console.error('Catalog sync error:', err.message);
