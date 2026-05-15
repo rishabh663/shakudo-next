@@ -6,6 +6,11 @@ const nextConfig = {
       { protocol: 'https', hostname: 'uploads-ssl.webflow.com' },
     ],
   },
+  async redirects() {
+    return [
+      { source: '/', destination: '/stack-builder', permanent: false },
+    ];
+  },
 };
 
 module.exports = nextConfig;
