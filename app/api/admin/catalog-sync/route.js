@@ -7,7 +7,10 @@ export async function POST(req) {
   if (secret) {
     const auth = req.headers.get('authorization') ?? '';
     if (auth !== `Bearer ${secret}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { ok: false, error: 'Unauthorized', requiresAuth: true },
+        { status: 401 }
+      );
     }
   }
 

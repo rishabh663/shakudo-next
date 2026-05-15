@@ -1,5 +1,10 @@
 import LogoImg from '@/components/shared/LogoImg';
 
+function formatVersion(version) {
+  if (!version) return 'Version TBD';
+  return /^v/i.test(version) ? version : `v${version}`;
+}
+
 export default function ComponentTile({ component, selected, onToggle }) {
   const { name, oneLiner, category, categoryLabel, logo, version } = component;
   return (
@@ -15,7 +20,7 @@ export default function ComponentTile({ component, selected, onToggle }) {
       </div>
       <div className="tile-desc">{oneLiner || ' '}</div>
       <div className="tile-foot">
-        <span className="tag">{version ? `v${version}` : 'Version TBD'}</span>
+        <span className="tag">{formatVersion(version)}</span>
         {/* TODO: re-enable when KB links are ready.
         <a className="tag" href={component.kbUrl} target="_blank" rel="noreferrer">Docs</a> */}
         <div style={{ flex: 1 }}></div>
