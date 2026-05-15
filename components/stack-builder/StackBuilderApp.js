@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { STACK_COMPONENTS, STACK_CATEGORIES } from '@/data/components';
 import TopNav from './TopNav';
 import CategorySidebar from './CategorySidebar';
 import ComponentTile from './ComponentTile';
@@ -66,7 +65,7 @@ function ProcessFlow() {
   );
 }
 
-export default function StackBuilderApp() {
+export default function StackBuilderApp({ initialComponents = [], initialCategories = [] }) {
   const [activeCat, setActiveCat] = useState('all');
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState([]);
@@ -75,9 +74,9 @@ export default function StackBuilderApp() {
   const toggle = name => setSelected(s => s.includes(name) ? s.filter(x => x !== name) : [...s, name]);
   const remove = name => setSelected(s => s.filter(x => x !== name));
 
-  let shown = STACK_COMPONENTS;
-  if (activeCat === '__selected') shown = STACK_COMPONENTS.filter(c => selected.includes(c.name));
-  else if (activeCat !== 'all') shown = STACK_COMPONENTS.filter(c => c.category === activeCat);
+  let shown = initialComponents;
+  if (activeCat === '__selected') shown = initialComponents.filter(c => selected.includes(c.name));
+  else if (activeCat !== 'all') shown = initialComponents.filter(c => c.category === activeCat);
   if (query) {
     const q = query.toLowerCase();
     shown = shown.filter(c => c.name.toLowerCase().includes(q) || c.oneLiner?.toLowerCase().includes(q));
@@ -86,7 +85,7 @@ export default function StackBuilderApp() {
   const filterLabel =
     activeCat === 'all' ? null
     : activeCat === '__selected' ? 'In your Stack Cart'
-    : STACK_CATEGORIES.find(c => c.id === activeCat)?.label || activeCat;
+    : initialCategories.find(c => c.id === activeCat)?.label || activeCat;
 
   return (
     <div className="app">
@@ -95,7 +94,6 @@ export default function StackBuilderApp() {
       <Hero />
       <ProcessFlow />
 
-      {/* Stack Builder — sidebar + grid */}
       <section className="builder" id="stack">
         <div className="page">
           <div className="builder-head">
@@ -110,17 +108,17 @@ export default function StackBuilderApp() {
 
           <div className="builder-grid">
             <CategorySidebar
-              categories={STACK_CATEGORIES}
+              categories={initialCategories}
               activeCat={activeCat}
               onSelect={setActiveCat}
-              totalCount={STACK_COMPONENTS.length}
+              totalCount={initialComponents.length}
               selectedCount={selected.length}
             />
 
             <main className="main">
               <div className="main-bar">
                 <span className="count-label">
-                  {shown.length} of {STACK_COMPONENTS.length} components
+                  {shown.length} of {initialComponents.length} components
                 </span>
                 <div className="grow"></div>
                 <div className="search">
@@ -158,12 +156,11 @@ export default function StackBuilderApp() {
         </div>
       </section>
 
-      {/* Spacer so content above isn't hidden by the fixed dock */}
       <div style={{ height: 120 }} />
 
       <StackTray
         selected={selected}
-        components={STACK_COMPONENTS}
+        components={initialComponents}
         onRemove={remove}
         onSubmit={() => setSubmitOpen(true)}
       />
@@ -171,7 +168,7 @@ export default function StackBuilderApp() {
       {submitOpen && (
         <SubmitDialog
           stack={selected}
-          components={STACK_COMPONENTS}
+          components={initialComponents}
           onClose={() => setSubmitOpen(false)}
         />
       )}
