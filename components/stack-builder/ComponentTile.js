@@ -1,7 +1,7 @@
 import LogoImg from '@/components/shared/LogoImg';
 
 export default function ComponentTile({ component, selected, onToggle }) {
-  const { name, oneLiner, category, logo } = component;
+  const { name, oneLiner, category, categoryLabel, logo, version } = component;
   return (
     <div className={'tile ' + (selected ? 'selected' : '')}>
       <div className="tile-head">
@@ -10,14 +10,14 @@ export default function ComponentTile({ component, selected, onToggle }) {
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div className="tile-name" title={name}>{name}</div>
-          <div className="tile-cat">{category}</div>
+          <div className="tile-cat">{categoryLabel || category}</div>
         </div>
       </div>
-      <div className="tile-desc">{oneLiner || ' '}</div>
+      <div className="tile-desc">{oneLiner || ' '}</div>
       <div className="tile-foot">
-        <span className="tag">v{(name.length % 3) + 1}.{name.length % 9}.{name.length % 5}</span>
+        <span className="tag">{version ? `v${version}` : 'Version TBD'}</span>
         {/* TODO: re-enable when KB links are ready.
-        <a className="tag" href={component.kbLink} target="_blank" rel="noreferrer">Docs</a> */}
+        <a className="tag" href={component.kbUrl} target="_blank" rel="noreferrer">Docs</a> */}
         <div style={{ flex: 1 }}></div>
         <button className={'tile-cta ' + (selected ? 'added' : '')} onClick={() => onToggle(name)}>
           {selected ? <><span style={{ fontSize: 12 }}>✓</span> Added</> : '+ Add to Stack'}
