@@ -1,7 +1,14 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
+import { createSubmission, updateSubmissionEmailStatus } from '../../../lib/submissions-db';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const INTERNAL_EMAIL = 'rishabh@shakudo.io';
+
+function getErrorMessage(error) {
+  if (error instanceof Error) return error.message;
+  return 'Unknown error';
+}
 
 export async function POST(req) {
   const { from, stack, note, submittedAt } = await req.json();
@@ -14,11 +21,20 @@ export async function POST(req) {
     .map(c => `<tr><td style="padding:4px 12px 4px 0"><strong>${c.name}</strong></td><td style="color:#968d7e">${c.category}</td></tr>`)
     .join('');
 
+  // 1. Persist submission to SQLite
+  let submission;
   try {
-    // 1. Internal team notification
+    submission = await createSubmission({ from, stack, note, submittedAt });
+  } catch (error) {
+    console.error('Submission persistence error:', getErrorMessage(error));
+    return NextResponse.json({ error: 'Failed to save submission' }, { status: 500 });
+  }
+
+  // 2. Internal team notification
+  try {
     await resend.emails.send({
       from: 'Shakudo Stack Builder <onboarding@resend.dev>',
-      to: 'rishabh@shakudo.io',
+      to: INTERNAL_EMAIL,
       reply_to: from.email,
       subject: `Stack submission — ${from.name} at ${from.company}`,
       html: `
@@ -28,15 +44,23 @@ export async function POST(req) {
             <tr><td style="padding:4px 16px 4px 0;color:#666">Name</td><td>${from.name}</td></tr>
             <tr><td style="padding:4px 16px 4px 0;color:#666">Company</td><td>${from.company}</td></tr>
             <tr><td style="padding:4px 16px 4px 0;color:#666">Email</td><td><a href="mailto:${from.email}">${from.email}</a></td></tr>
-            <tr><td style="padding:4px 16px 4px 0;color:#666">Submitted</td><td>${submittedAt}</td></tr>
+            <tr><td style="padding:4px 16px 4px 0;color:#666">Submitted</td><td>${submittedAt || submission.receivedAt}</td></tr>
+            <tr><td style="padding:4px 16px 4px 0;color:#666">ID</td><td style="font-family:monospace;font-size:12px">${submission.id}</td></tr>
           </table>
           <h3 style="margin:0 0 10px;font-size:15px">Stack — ${stack.length} components</h3>
           <table style="font-size:13px;margin-bottom:20px">${stackRows}</table>
           ${note ? `<h3 style="margin:0 0 8px;font-size:15px">Note</h3><p style="font-size:14px;color:#444;margin:0">${note}</p>` : ''}
         </div>`,
     });
+    await updateSubmissionEmailStatus(submission.id, 'internal', 'sent');
+  } catch (error) {
+    const message = getErrorMessage(error);
+    console.error('Internal email error:', message);
+    await updateSubmissionEmailStatus(submission.id, 'internal', 'failed', message);
+  }
 
-    // 2. Customer acknowledgement
+  // 3. Customer acknowledgement
+  try {
     await resend.emails.send({
       from: 'Shakudo Stack Builder <onboarding@resend.dev>',
       to: from.email,
@@ -56,10 +80,12 @@ export async function POST(req) {
           </p>
         </div>`,
     });
-
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error('Email error:', err.message);
-    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+    await updateSubmissionEmailStatus(submission.id, 'ack', 'sent');
+  } catch (error) {
+    const message = getErrorMessage(error);
+    console.error('ACK email error:', message);
+    await updateSubmissionEmailStatus(submission.id, 'ack', 'failed', message);
   }
+
+  return NextResponse.json({ ok: true, id: submission.id });
 }
