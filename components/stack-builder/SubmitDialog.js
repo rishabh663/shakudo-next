@@ -53,13 +53,13 @@ export default function SubmitDialog({ stack, components, onClose }) {
       <div className="dialog-scrim" onClick={onClose}>
         <div className="dialog dialog-success" onClick={e => e.stopPropagation()}>
           <div className="glyph">✓</div>
-          <h2>Your stack is on its way.</h2>
+          <h2>Your custom stack request has been received.</h2>
           <p className="lead">
-            A Shakudo expert will be in touch within one business day with a tailored recommendation and deployment plan.
+            Our experts will review your requirements and get in touch with a deployment plan tailored to your goals.
           </p>
           <div className="actions" style={{ justifyContent: 'center', marginTop: 18 }}>
             <button className="btn btn-secondary" onClick={onClose}>Back to catalog</button>
-            <button className="btn btn-primary" onClick={onClose}>Done</button>
+            <button className="btn btn-primary" onClick={onClose}>View status <span style={{ fontFamily: 'var(--font-mono)' }}>→</span></button>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@ export default function SubmitDialog({ stack, components, onClose }) {
     <div className="dialog-scrim" onClick={onClose}>
       <div className="dialog" onClick={e => e.stopPropagation()}>
         <h2>Submit your stack</h2>
-        <p className="lead">We'll review your selection and reply with deployment details.</p>
+        <p className="lead">We'll review your selection, validate compatibility, and reply with deployment details. Mention anything not in the catalog in the note.</p>
 
         <div className="stack-summary">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
@@ -114,7 +114,7 @@ export default function SubmitDialog({ stack, components, onClose }) {
           className="textarea textarea-sm"
           value={note}
           onChange={e => setNote(e.target.value)}
-          placeholder="Compliance requirements, target cloud, timeline, or anything else our team should know."
+          placeholder="Need a component not in the catalog? Tell us. Compliance requirements (SOC2, HIPAA), target cloud, timing — anything our team should know."
         />
 
         <div className="next-steps">
@@ -127,7 +127,7 @@ export default function SubmitDialog({ stack, components, onClose }) {
         <div className="actions">
           <button className="btn btn-ghost" onClick={onClose}>Cancel</button>
           <button className="btn btn-primary" disabled={!valid || phase === 'sending'} onClick={submit}>
-            {phase === 'sending' ? 'Sending…' : <>Submit Selected Stack <span style={{ fontFamily: 'var(--font-mono)' }}>→</span></>}
+            {phase === 'sending' ? 'Sending…' : <>Submit stack <span style={{ fontFamily: 'var(--font-mono)' }}>→</span></>}
           </button>
         </div>
       </div>

@@ -23,7 +23,7 @@ export default function ComponentTile({ component, selected, onToggle }) {
           {selected ? <><span style={{ fontSize: 12 }}>✓</span> Added</> : '+ Add to Stack'}
         </button>
       </div>
-      <div className="tile-synced">Last synced: —</div>
+      {/* last_synced_at reserved in DB schema — rendered when sync data lands */}
     </div>
   );
 }
